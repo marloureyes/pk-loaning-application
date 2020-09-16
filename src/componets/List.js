@@ -5,7 +5,7 @@ function useData(){
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        firebase
+        const unsubcribe = firebase
             .firestore()
             .collection('data')
             .onSnapshot((snapshot) => {
@@ -15,9 +15,9 @@ function useData(){
                 }))
             setData(newData);
             })
-        }
-    )
 
+            return () => unsubcribe()
+        },[])
     return data;
 }
 
