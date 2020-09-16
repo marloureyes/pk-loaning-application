@@ -27,7 +27,12 @@ export default function List(){
         <ul>
             {data.map((items) =>
                 <li key={items.id}>
-                    <h1>{items.fullname}</h1>
+                    <h1>{items.fullName}</h1>
+                    <p>{items.contact}</p>
+                    <p>{items.amount}</p>
+                    <p>{items.deductInterest}</p>
+                    <p>{items.paymentMonth}</p>
+                    <p>{items.comments}</p>
                     <p>{items.contact}</p>
                 </li>
             )}
