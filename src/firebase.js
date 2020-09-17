@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 // Your web app's Firebase configuration
+// 12
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   var firebaseConfig = {
     apiKey: process.NODE_ENV === 'development' ? process.env.REACT_APP_FIREBASE_API_KEY : process.FIREBASE_API_KEY,
