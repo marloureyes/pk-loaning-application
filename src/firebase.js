@@ -1,9 +1,5 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-console.log(process.env.REACT_APP_FIREBASE_API_KEY)
-console.log(process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID)
-console.log(process.env.REACT_APP_FIREBASE_APP_ID)
-console.log(process.env.REACT_APP_FIREBASE_MEASUREMENT_ID)
 // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   var firebaseConfig = {
