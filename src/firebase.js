@@ -11,7 +11,7 @@ import 'firebase/auth';
     projectId: "pk-loan-app",
     storageBucket: "pk-loan-app.appspot.com",
     messagingSenderId: process.env.NODE_ENV === 'development' ? process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID : process.FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NODE_ENV === 'development' ? process.env.REACT_APP_FIREBASE_APP_ID : process.env.FIREBASE_APP_ID,
+    appId: process.env.NODE_ENV === 'development' ? process.env.REACT_APP_FIREBASE_APP_ID : process.FIREBASE_APP_ID,
     measurementId: process.env.NODE_ENV === 'development' ? process.env.REACT_APP_FIREBASE_MEASUREMENT_ID: process.FIREBASE_APP_ID,
   };
   // Initialize Firebase
