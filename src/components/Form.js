@@ -1,7 +1,6 @@
 import React, { useState } from 'react'; 
 import firebase from '../firebase';
-
-export default function Form(){
+function Form(){
     const [fullName, setFullName] = useState('');
     const [contact, setContact] = useState('');
     const [date, setDate] = useState('');
@@ -100,3 +99,5 @@ export default function Form(){
         </div>
     )
 }
+
+export default Form;

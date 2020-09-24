@@ -1,38 +1,27 @@
 import React from 'react';
 import './App.css';
-import Form from './componets/Form';
-import List from './componets/List';
+import Login from './components/Login';
+import ListApp from './list-app';
+import * as routes from './routes/routes';
+import withAuth from './auth/withAuth';
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link
-} from 'react-router-dom';
+  Switch,
+} from 'react-router-dom';  
+
 function App() {
+
   return (
-  <Router>
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Form</Link>
-          </li>
-          <li>
-            <Link to="/list">List</Link>
-          </li>
-        </ul>
-        </nav>
-    </div>
-   <Switch>
-          <Route path="/list">
-            <List />
-          </Route>
-          <Route path="/">
-            <Form />
-          </Route>
-        </Switch>
-  </Router>
+  <>
+    <Router>
+      <Switch>
+        <Route path={routes.LOGIN} component={Login} />
+        <Route path={routes.APP} component={ListApp} />
+      </Switch>
+    </Router>
+  </>
   );
 };
 
-export default App;
+export default withAuth(App);
