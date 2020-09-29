@@ -1,102 +1,112 @@
-import React, { useState } from 'react'; 
+import React, {useState} from 'react'; 
 import firebase from '../firebase';
-function Form(){
-    const [fullName, setFullName] = useState('');
-    const [contact, setContact] = useState('');
-    const [date, setDate] = useState('');
-    const [amount, setAmount] = useState('');
-    const [deductInterest, setDeductInterest] = useState(null);
-    const [paymentMonth, setPaymentMonth] = useState('');
-    const [comments, setComments] = useState('');
+import { Form as FormLayout, Input, DatePicker, Radio, Select, Button, notification } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 
-    function onSubmit(e){
-        e.preventDefault();
+function Form(){
+    const [ form ] = FormLayout.useForm();
+    const [ loading, setLoading] = useState(false);
+    const [ error, setError] = useState('');
+
+    const openNotification = () => {
+        notification.open({
+          message: 'List Added Confirm',
+          description:
+            'You have added a list.',
+          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+        });
+      };
+
+    const layout = {
+        labelCol: { span: 6 },
+        wrapperCol: { span: 13 },
+      };
+      const tailLayout = {
+        wrapperCol: { offset: 16, span: 13 },
+      }
+
+    function onFinish(e){
+        setLoading([true])
+        const { fullName, address, contact, date, amount, deductInterest, months, comments} = e;
+        const status = 'Ongoing';
+        const dateSubmit = date.format('YYYY-MM-DD')
         firebase
             .firestore()
             .collection('data')
             .add({
                 fullName,
                 contact,
-                date,
+                address,
+                dateSubmit,
                 amount,
                 deductInterest,
-                paymentMonth,
-                comments
+                months,
+                comments,
+                status
+            }).then(() =>{
+                setLoading(false);
+                openNotification();
+            }).catch(err =>{
+                setError(err);
             })
-            .then(() => {
-                setFullName('');
-                setContact('');
-                setAmount('');
-                setDeductInterest('');
-                setPaymentMonth('');
-                setComments('');
-            })
+        form.resetFields();
     }
 
     return (
-        <div>
-            <form className="loan-form" onSubmit={onSubmit}>
-            <div className="name">
-                <label htmlFor="fullName">Full Name:</label>
-                <input value={fullName} name="fullName" onChange={e => setFullName(e.currentTarget.value)} type="text" required />
-            </div>
-            <div className="contact"> 
-                <label htmlFor="phone">Contact</label>
-                <input type="number"  min-length="9" id="phone" name="phone" value={contact} onChange={e => setContact(e.currentTarget.value)}/>
-            </div>
-    
-            <div className="date">
-                <label htmlFor="date">Date:</label>
-                <input type="date" id="birthday" name="date" value={date} onChange={e => setDate(e.currentTarget.value)}/>
-            </div>
-    
-            <div className="amount">
-                <label htmlFor="amount">Amount:</label>
-                <input type="number" id="birthday" name="amount" value={amount} onChange={e => setAmount(e.currentTarget.value)}/>
-            </div>
-    
-            <div className="deduct-interest">
-                <label or="interest">Deduct Interest</label>
-                <input type="radio" value={'Yes'} name="yes" checked={deductInterest === 'Yes'} onChange={e => setDeductInterest(e.currentTarget.value)}/>
-                <label htmlFor="yes">Yes</label>
-                <input type="radio" value={'No'} checked={deductInterest === 'No'} name="no" onChange={e => setDeductInterest(e.currentTarget.value)} />
-                <label htmlFor="no">No</label>
-            </div>
-    
+        <>
+            <FormLayout form={form} {...layout} onFinish={onFinish}>
+                <p>{error}</p>
+                <FormLayout.Item name="fullName" label="Fullname" rules={[{ required: true, message: 'Please input Fullname!' }]}>
+                    <Input />
+                </FormLayout.Item>
+                <FormLayout.Item name="contact" label ="Contact" rules={[{ required: true, message: 'Please input Contact!' }]}> 
+                    <Input type="number"/>
+                </FormLayout.Item>
+                <FormLayout.Item name="address" label ="Address" rules={[{ required: true, message: 'Please input Address!' }]}> 
+                    <Input />
+                </FormLayout.Item>
+                <FormLayout.Item name="date" label="Date" rules={[{ required: true, message: 'Please input a date!' }]}>
+                    <DatePicker />
+                </FormLayout.Item>
+                <FormLayout.Item name="amount" label="Amount" rules={[{ required: true, message: 'Please input Amount!' }]}>
+                    <Input type="number"/>
+                </FormLayout.Item>
+        
+                <FormLayout.Item name="deductInterest" label="Deduct Interest?" rules={[{ required: true, message: 'Please insert a value!' }]}>
+                    <Radio.Group>
+                        <Radio value="Yes">Yes</Radio>
 
-            <div className="payDuration" style={{display: "flex", flexDirection: "column", }}>
-                <label>
-                    <input type="radio" value="1" checked={paymentMonth === "1"} onChange={e=> setPaymentMonth(e.currentTarget.value)}  />
-                1 Month
-                </label>
-                <label>
-                <input type="radio" value="2" checked={paymentMonth === "2"} onChange={e=> setPaymentMonth(e.currentTarget.value)}  />
-                2 Month
-                </label>
-                <label>
-                <input type="radio" value="3" checked={paymentMonth === "3"} onChange={e=> setPaymentMonth(e.currentTarget.value)}  />
-                3 Month
-                </label>
-                <label>
-                <input type="radio" value="4" checked={paymentMonth === "4"} onChange={e=> setPaymentMonth(e.currentTarget.value)}  />
-                4 Month
-                </label>
-                <label>
-                <input type="radio" value="5" checked={paymentMonth === "5"} onChange={e=> setPaymentMonth(e.currentTarget.value)}  />
-                5 Month
-                </label>
-            </div>
-
-    
-            <div className="comments">
-                <label htmlFor="thoughts">Other thoughts and comments</label>
-                <textarea type="textarea" value={comments} onChange={e => setComments(e.currentTarget.value)}></textarea>
-            </div>
-            <div>
-                <button>Submit</button>
-            </div>
-            </form>
-        </div>
+                        <Radio value="No">No</Radio>
+                    </Radio.Group>
+                </FormLayout.Item>
+                <FormLayout.Item name="months" label="Months"  rules={[{ required: true, message: 'Please pick how many months!' }]}>
+                    <Select>
+                        <Select.Option key="1" value="1">
+                            1 Month
+                        </Select.Option>
+                        <Select.Option key="2" value="2">
+                            2 Months
+                        </Select.Option >
+                        <Select.Option key="3" value="3">
+                            3 Months
+                        </Select.Option>
+                        <Select.Option key="4" value="4">
+                            4 Months
+                        </Select.Option>
+                        <Select.Option key="5" value="5">
+                            5 Months
+                        </Select.Option>
+                    </Select>
+                </FormLayout.Item>
+        
+                <FormLayout.Item name="comments" label="Other thoughts and comments">
+                    <Input.TextArea />
+                </FormLayout.Item>
+                <FormLayout.Item {...tailLayout}>
+                    <Button htmlType="submit" type="primary" loading={loading[0]}>Submit</Button>
+                </FormLayout.Item>
+            </FormLayout>
+        </>
     )
 }
 

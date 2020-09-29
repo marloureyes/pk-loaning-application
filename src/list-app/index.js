@@ -10,7 +10,7 @@ function ListApp() {
     return (
         <HeaderLayout url ={url}>
             <Switch>
-                <Route exact path={'/form'} component={Form} />
+                <Route path={'/form'} component={Form} />
                 <Route path={'/list'} component={List} />
             </Switch>
         </HeaderLayout>
