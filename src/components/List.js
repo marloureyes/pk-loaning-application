@@ -51,10 +51,6 @@ const columns = [
         dataIndex: 'comments',
         key: 'comments'
     }
-    {
-        title:
-    }
-
 ]
 
 function useData(){
